@@ -4,6 +4,8 @@
 
 # TODO
 # For now Torrents will only collect .torrent files eventually it will grab the torrent download as well by name matching with the .torrent file
+# Classify folders when possible
+
 
 # os -  used for operating system manipulation such as reading or writing to a file
 # shutil - used for file operations such as move, copy and delete
@@ -13,7 +15,7 @@ import os, shutil, sys
 
 # master_folder = "/Users/William/Downloads"
 master_folder = "/Users/William/Downloads"
-folder_dic = {"Images": [".png", ".jpg", ".jpeg", ".gif"], "Music": [".mp3", ".wav", ".flac", ".m4a", ".ogg", ".mid", ".asd", ".m3u", ".pls", ".alp"], "Torrents": [".torrent"], "Books": [".epub", ".mobi"], "Documents": [".pdf", ".txt", ".doc", ".docx", ".ppt", ".pptx", ".md", ".json"], "Videos": [".mkv", ".mp4", ".mov", ".mpeg", ""], "Programs": [".dmg", ".exe", ".sh"], "Zipped": [".zip", ".rar", ".7z", ".tar.gz", ".tar", ".gz"]}
+folder_dic = {"Images": [".png", ".jpg", ".jpeg", ".gif"], "Music": [".mp3", ".wav", ".flac", ".m4a", ".ogg", ".mid", ".asd", ".m3u", ".pls", ".alp"], "Torrents": [".torrent"], "Books": [".epub", ".mobi"], "Documents": [".pdf", ".txt", ".doc", ".docx", ".ppt", ".pptx", ".md", ".json"], "Videos": [".mkv", ".mp4", ".mov", ".mpeg", ""], "Programs": [".dmg", ".exe", ".sh", ".app"], "Zipped": [".zip", ".rar", ".7z", ".tar.gz", ".tar", ".gz"], "Web": [".html", ".css", ".js"]}
 
 # check extension of file and returns matching folder from folder_dic
 def get_folder(value):
@@ -25,8 +27,9 @@ def get_folder(value):
     return "NA"
 
 # returns the file extension given a file name
+#finds last occurance of "." for extension
 def get_extension(value):
-    ext = value[value.index("."):]
+    ext = value[value.rfind("."):]
     return ext
 
 def process_files():
@@ -36,7 +39,7 @@ def process_files():
             print filename + " is a folder"
         else:
             if filename.find(".") != -1:
-                ext =get_extension(filename)
+                ext = get_extension(filename)
                 # print "ext = " + ext
                 folder = get_folder(ext)
                 # print "folder = " + folder
