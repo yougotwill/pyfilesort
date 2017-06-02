@@ -15,7 +15,7 @@ import os, shutil, sys
 
 # master_folder = "/Users/William/Downloads"
 master_folder = "/Users/William/Downloads"
-folder_dic = {"Images": [".png", ".jpg", ".jpeg", ".gif"], "Music": [".mp3", ".wav", ".flac", ".m4a", ".ogg", ".mid", ".asd", ".m3u", ".pls", ".alp"], "Torrents": [".torrent"], "Books": [".epub", ".mobi"], "Documents": [".pdf", ".txt", ".doc", ".docx", ".ppt", ".pptx", ".md", ".json"], "Videos": [".mkv", ".mp4", ".mov", ".mpeg", ""], "Programs": [".dmg", ".exe", ".sh", ".app"], "Zipped": [".zip", ".rar", ".7z", ".tar.gz", ".tar", ".gz"], "Web": [".html", ".css", ".js"]}
+folder_dic = {"Images": [".png", ".jpg", ".jpeg", ".gif"], "Music": [".mp3", ".wav", ".flac", ".m4a", ".ogg", ".mid", ".asd", ".m3u", ".pls", ".alp", ".asx"], "Torrents": [".torrent"], "Books": [".epub", ".mobi"], "Documents": [".pdf", ".txt", ".doc", ".docx", ".ppt", ".pptx", ".md", ".json"], "Videos": [".mkv", ".mp4", ".mov", ".mpeg", ""], "Programs": [".dmg", ".exe", ".sh", ".app"], "Zipped": [".zip", ".rar", ".7z", ".tar.gz", ".tar", ".gz"], "Web": [".html", ".css", ".js"]}
 
 # check extension of file and returns matching folder from folder_dic
 def get_folder(value):
@@ -30,6 +30,7 @@ def get_folder(value):
 #finds last occurance of "." for extension
 def get_extension(value):
     ext = value[value.rfind("."):]
+    ext = ext.lower()
     return ext
 
 def process_files():
