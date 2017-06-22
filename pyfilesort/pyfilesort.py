@@ -3,9 +3,9 @@
 # 26 May 2017
 
 # TODO
+# Make sure everything runs smoothly on Linux and Windows
 # For now Torrents will only collect .torrent files eventually it will grab the torrent download as well by name matching with the .torrent file
 # Classify folders when possible - now ignores download folders
-
 
 # os -  used for operating system manipulation such as reading or writing to a file
 # shutil - used for file operations such as move, copy and delete
@@ -20,9 +20,9 @@ folder_dic = {
 "_Images": [".png", ".jpg", ".jpeg", ".gif", ".xcf", ".stl", ".blend"],
 "_Music": [".mp3", ".wav", ".flac", ".m4a", ".ogg", ".mid", ".asd", ".m3u", ".pls", ".alp", ".asx", ".bfxrsound"],
 "_Torrents": [".torrent"],
-"Books": [".epub", ".mobi"],
+"_Books": [".epub", ".mobi"],
 "_Documents": [".pdf", ".txt", ".doc", ".docx", ".ppt", ".pptx", ".md", ".json", ".ods", ".log", ".xls"],
-"_Videos": [".mkv", ".mp4", ".mov", ".mpeg", ""],
+"_Videos": [".mkv", ".mp4", ".mov", ".mpeg"],
 "_Programs": [".dmg", ".exe", ".sh", ".app", ".pkg"],
 "_Zipped": [".zip", ".rar", ".7z", ".tar.gz", ".tar", ".gz"],
 "_Web": [".html", ".css", ".js"],
@@ -116,10 +116,11 @@ def clean_files(clean_folder):
         print "Folders " + str(folder_count) + " folders"
         print "-------------------"
         flag = raw_input("Quit pyfilesort? [y/n]\n")
-        if(flag=='n'):
-            main()
-        else:
+        if(flag=='y'):
+            print "----end program-----\n"
             sys.exit()
+        else:
+            main()
 
     elif(clean_folder == 'c'):
         main()
@@ -128,7 +129,7 @@ def clean_files(clean_folder):
         main()
 
 def main():
-    print "----pyfilesort-----"
+    print "----pyfilesort-----\n"
     global clean_folder
     flag = raw_input("Where do you need sorting?\n[1]Downloads\t[2]Desktop\t[3]Documents\t[4]Other\t[q]Quit\n")
     #need to search for directory intelligently
@@ -142,9 +143,10 @@ def main():
         clean_folder = "/Users/William/Documents"
         clean_files(clean_folder)
     elif(flag == "4"):
-        clean_folder = raw_input("Press [c] to cancel\nEnter the file path you want cleaned (e.g. /Users/USERNAME/Downloads):\n")
+        clean_folder = raw_input("Enter [c] to cancel\nEnter the file path you want cleaned (e.g. /Users/USERNAME/Downloads):\n")
         clean_files(clean_folder)
     elif(flag == "q"):
+        print "----end program-----\n"
         sys.exit()
     else:
         print "\nERROR: Invalid input\n"
