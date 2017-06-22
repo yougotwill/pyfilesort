@@ -102,25 +102,35 @@ def transfer_files(filename, base_folder):
                 move_count+=1
                 # print "moved " + filename + " to " + folder
             except:
-                print "transfer error: " + filename
-        else:
-            print ext + " file not supported"
+                print "\nERROR: File transfer error: " + filename + "\n"
+        # else:
+            # print ext + " file not supported"
 
 def clean_files(clean_folder):
     if(os.path.isdir(clean_folder)):
-        print "Cleaning up..."
-        process_files(clean_folder)
-        print "STATS"
+        print "Processing..."
         print "-------------------"
+        process_files(clean_folder)
+        print "SUMMARY"
         print "Moved " + str(move_count) + " files"
         print "Folders " + str(folder_count) + " folders"
         print "-------------------"
-        print "Done"
+        flag = raw_input("Quit pyfilesort? [y/n]\n")
+        if(flag=='n'):
+            main()
+        else:
+            sys.exit()
+
+    elif(clean_folder == 'c'):
+        main()
+    else:
+        print "\nERROR: Directory doesn't exist\n"
+        main()
 
 def main():
-    print "Welcome to pyfilesort"
+    print "----pyfilesort-----"
     global clean_folder
-    flag = raw_input("Where do you want to clean?\n[1]Downloads\t[2]Desktop\t[3]Documents\t[4]Other\n")
+    flag = raw_input("Where do you need sorting?\n[1]Downloads\t[2]Desktop\t[3]Documents\t[4]Other\t[q]Quit\n")
     #need to search for directory intelligently
     if(flag == "1"):
         clean_folder = "/Users/William/Downloads"
@@ -132,11 +142,13 @@ def main():
         clean_folder = "/Users/William/Documents"
         clean_files(clean_folder)
     elif(flag == "4"):
-        clean_folder = raw_input("Enter the file path you want cleaned (e.g. /Users/USERNAME/Downloads):\n")
+        clean_folder = raw_input("Press [c] to cancel\nEnter the file path you want cleaned (e.g. /Users/USERNAME/Downloads):\n")
         clean_files(clean_folder)
-    else:
-        print "Invalid option please run pyfilesort again"
+    elif(flag == "q"):
         sys.exit()
+    else:
+        print "\nERROR: Invalid input\n"
+        main()
 
 if __name__ == '__main__':
     main()
