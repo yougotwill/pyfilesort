@@ -12,7 +12,7 @@ Sorts files and puts them into *\_Type* folders for easy access at the top of yo
 Python 2
 
 ## Running
-To run this program run ```python pyfilesort.py```
+To run this program run ```python pyfilesort/pyfilesort.py```
 
 Files are classified as follows:
 
