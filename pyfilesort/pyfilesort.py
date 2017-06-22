@@ -29,6 +29,10 @@ folder_dic = {
 "_Scripts": [".py", ".java", ".class", ".sh"]
 }
 
+#stats
+move_count = 0
+folder_count = 0
+
 # check extension of file and returns matching folder from folder_dic
 def get_folder(value):
     for k,v in folder_dic.items():
@@ -62,12 +66,22 @@ def process_files(base_folder):
                         # print filename + "is an application container"
                         transfer_files(filename, base_folder)
                     else:
-                        print filename + " is a folder"
+                        global folder_count
+                        folder_count += 1
+                        # print filename + " is a folder"
                         # would try and run process_files(current_folder) and then based on the file contents classify the directory
                         # when classifying the directory if there is another directory inside then ask the user to classify it for you
                         # there should be a flag to allow the user to specify smart directory sorting or manual directory sorting
-
-
+                        # print "Folder found. Would you like to move " + filename + "? [Y/N]"
+                        # flag = raw_input()
+                        # if(flag!="N"):
+                        #     print "Where would you like to move " + filename + "?"
+                        #     flag = raw_input(str(folder_dic.keys()) + "\n")
+                        #     for k in folder_dic.keys():
+                        #         if(flag==k):
+                        #             shutil.move(base_folder + "/"+ filename, base_folder + "/" + k)
+                        #             global move_count
+                        #             move_count +=1
             else:
                 transfer_files(filename, base_folder)
 
@@ -84,6 +98,8 @@ def transfer_files(filename, base_folder):
             #move file to sorting folder
             try:
                 shutil.move(base_folder + "/"+ filename, folder_path)
+                global move_count
+                move_count+=1
                 # print "moved " + filename + " to " + folder
             except:
                 print "transfer error: " + filename
@@ -93,30 +109,33 @@ def transfer_files(filename, base_folder):
 def clean_files(clean_folder):
     if(os.path.isdir(clean_folder)):
         print "Cleaning up..."
-        print "-------------------"
         process_files(clean_folder)
+        print "STATS"
+        print "-------------------"
+        print "Moved " + str(move_count) + " files"
+        print "Folders " + str(folder_count) + " folders"
         print "-------------------"
         print "Done"
 
 def main():
-    print "Welcome to PyCleaner"
+    print "Welcome to pyfilesort"
     global clean_folder
-    flag = raw_input("Where do you want to clean?\n[D]ownloads\n[De]sktop\n[Doc]umnets\n[O]ther\n")
+    flag = raw_input("Where do you want to clean?\n[1]Downloads\t[2]Desktop\t[3]Documents\t[4]Other\n")
     #need to search for directory intelligently
-    if(flag == "D"):
+    if(flag == "1"):
         clean_folder = "/Users/William/Downloads"
         clean_files(clean_folder)
-    elif(flag == "De"):
+    elif(flag == "2"):
         clean_folder = "/Users/William/Desktop"
         clean_files(clean_folder)
-    elif(flag == "Doc"):
+    elif(flag == "3"):
         clean_folder = "/Users/William/Documents"
         clean_files(clean_folder)
-    elif(flag == "O"):
-        clean_folder = raw_input("Enter the file path you want cleaned:\n")
+    elif(flag == "4"):
+        clean_folder = raw_input("Enter the file path you want cleaned (e.g. /Users/USERNAME/Downloads):\n")
         clean_files(clean_folder)
     else:
-        print "Invalid option please run PyCleaner again"
+        print "Invalid option please run pyfilesort again"
         sys.exit()
 
 if __name__ == '__main__':
