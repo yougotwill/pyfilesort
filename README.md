@@ -11,9 +11,25 @@ Sorts files and puts them into *\_Type* folders for easy access at the top of yo
 ## Prerequisites
 Python 2
 
-## Running
-To run this program run ```python pyfilesort/pyfilesort.py```
+## Building
+Initial setup for pyfilesort
+```
+make
+```
 
+## Running
+To run pyfilesort
+```
+make run
+```
+
+## Uninstalling
+To cleanup the code directory and remove dependencies
+```
+make clean
+```
+
+## File Classification
 Files are classified as follows:
 
 | *_Type* Folder | File Extension                           |
