@@ -3,10 +3,10 @@
 *Get your files sorted*
 
 ## Description
-Just a basic program to sort files in a directory.
+Just a basic program to sort items in a directory.
 Please use with caution. I have only tested this on macOS.
 
-Sorts files and puts them into *\_Type* folders for easy access at the top of your directory.
+Sorts files and folders and puts them into *\_Type* folders for easy access at the top of your directory.
 
 ## Prerequisites
 Python 2
@@ -38,7 +38,7 @@ Files are classified as follows:
 | _Documents     | ".pdf", ".txt", ".doc", ".docx", ".ppt", ".pptx", ".md", ".json", ".ods", ".log", ".xls" |
 | _Images        | ".png", ".jpg", ".jpeg", ".gif", ".xcf", ".stl", ".blend" |
 | _Music         | ".mp3", ".wav", ".flac", ".m4a", ".ogg", ".mid", ".asd", ".m3u", ".pls", ".alp", ".asx", ".bfxrsound" |
-| _Programs      | ".dmg", ".exe", ".sh", ".app", ".pkg"    |
+| _Programs      | ".dmg", ".exe", ".sh", ".app", ".pkg", ".apk", ".ipa"    |
 | _Scripts       | ".py", ".java", ".class", ".sh"          |
 | _Torrents      | ".torrent"                               |
 | _Videos        | ".mkv", ".mp4", ".mov", ".mpeg"          |
