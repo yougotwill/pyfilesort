@@ -4,8 +4,7 @@
 
 # TODO
 # Make sure everything runs smoothly on Linux and Windows
-# Classify folders that don't just have one type of file in them - picking where to move a folder is very buggy
-    # use a string and concatenate the _folder for each item in the directory. Then check the nnumber of occurences for the _folder in the string. The one with the most occurences is then chosen
+# Classify folders that have fullstops but aren't ntainers
 # add flag to sort the primary files from the command line i.e. clean dowinloads, desktop, etc.
 # make flags work with sys.argv
 # Make separate config file that will be read into the program. Will contain folder_dic and folder flag and other possible settings.
@@ -13,6 +12,7 @@
 # os -  used for operating system manipulation such as reading or writing to a file
 # shutil - used for file operations such as move, copy and delete
 # sys - provides variables and methods controlled by the interpreter
+# torrenttool - python library to read information from a torrent to find the matching torrent directory
 
 import os, shutil, sys
 from torrentool.api import Torrent # library used to read torrent meta data so the folder can be classified along with the torrent file
@@ -25,7 +25,7 @@ folder_dic = {
 "_Documents": [".pdf", ".txt", ".doc", ".docx", ".ppt", ".pptx", ".md", ".json", ".ods", ".log", ".xls"],
 "_Images": [".png", ".jpg", ".jpeg", ".gif", ".xcf", ".stl", ".blend"],
 "_Music": [".mp3", ".wav", ".flac", ".m4a", ".ogg", ".mid", ".asd", ".m3u", ".pls", ".alp", ".asx", ".bfxrsound"],
-"_Programs": [".dmg", ".exe", ".sh", ".app", ".pkg"],
+"_Programs": [".dmg", ".exe", ".sh", ".app", ".pkg", ".apk", ".ipa"],
 "_Scripts": [".py", ".java", ".class", ".sh"],
 "_Torrents": [".torrent"],
 "_Videos": [".mkv", ".mp4", ".mov", ".mpeg"],
@@ -33,23 +33,22 @@ folder_dic = {
 "_Zipped": [".zip", ".rar", ".7z", ".tar.gz", ".tar", ".gz"]
 }
 folder_order = {
-"_Images": 1,
-"_Music": 2,
-"_Torrents": 3,
-"_Books": 4,
-"_Documents": 5,
-"_Videos": 6,
-"_Programs": 7,
-"_Zipped": 8,
+"_Books": 1,
+"_Documents": 2,
+"_Images": 3,
+"_Music": 4,
+"_Programs": 5,
+"_Scripts": 6,
+"_Torrents": 7,
+"_Videos": 8,
 "_Web": 9,
-"_Scripts": 10
+"_Zipped": 10
 }
 
 folder_torrent = [] #stores folders of .torrent files that need to be sorted
 
 #stats
 move_count = 0
-folder_count = 0
 
 # check extension of file and returns matching folder from folder_dic
 def get_folder(value):
@@ -69,6 +68,19 @@ def get_folder2(value):
     # if extension not found
     return "NA"
 
+# checks for the most occurences of an _folder in the string and returns that _folder
+def most_occurences(folder_string):
+    max_count = -1
+    max_folder = ""
+    if(folder_string.count("NA")>0):
+        return "NA"
+    for k,v in folder_dic.items():
+        folder_count = folder_string.count(str(k))
+        if(folder_count > max_count):
+            max_count = folder_count
+            max_folder = str(k)
+    return max_folder
+
 # returns the file extension given a file name
 #finds last occurance of "." for extension
 def get_extension(value):
@@ -83,95 +95,6 @@ def print_sort_folder_options(): # prints out the _sorting folders with an alloc
     for v in range(options):
         output = output + "[" + str(v+1) + "]" + get_folder2(v+1) + " "
     return output
-
-def process_folder(sort_folder, base_folder): #sort_folder is the folder I am classifying
-    global move_count
-    global folder_torrent
-    if(len(folder_torrent) != 0 and sort_folder in str(folder_torrent)): #if the torrent folder array isn't empty and if the directory matches with a .torrent file
-        folder_torrent.remove(sort_folder)
-        folder = "_Torrents"
-        folder_path = base_folder + "/" + folder
-        # check if a sorting folder directory exists
-        if os.path.exists(folder_path) == False:
-            os.mkdir(folder_path)
-        #move file to sorting folder
-        try:
-            shutil.move(base_folder + "/" + sort_folder, folder_path)
-            move_count+=1
-            # print "moved " + filename + " to " + folder
-        except:
-            print "\nERROR: Folder transfer error: " + sort_folder + "\n"
-    else:
-        sort_folder = base_folder + "/" + sort_folder
-        if(os.path.isdir(sort_folder)):
-            sameExt = True
-            previousExt = "" #stores the previous files extension
-            for filename in os.listdir(sort_folder):
-                # check if filename is not a directory and is a file
-                if(not os.path.isdir(sort_folder + "/"+ filename)):
-                    if filename.find(".") != -1:
-                        ext = get_extension(filename)
-                        # print "ext = "
-                        if(not ext==".ds_store"):
-                            if(previousExt==""):
-                                previousExt = ext
-                            if(not ext==previousExt): # means the folder cannot be classified easily
-                                sameExt = False
-                                break
-                    # do nothing because it is a sub-directory of the directory we are checking
-            if(sameExt): # if we can classify the folder
-                folder = get_folder(previousExt)
-                # print "folder = " + folder
-                if folder!="NA":
-                    folder_path = base_folder + "/" + folder
-                    # check if a sorting folder directory exists
-                    if os.path.exists(folder_path) == False:
-                        os.mkdir(folder_path)
-                    #move file to sorting folder
-                    try:
-                        shutil.move(sort_folder, folder_path)
-                        move_count+=1
-                        # print "moved " + filename + " to " + folder
-                    except:
-                        print "\nERROR: Folder transfer error: " + sort_folder + "\n"
-                # else:
-                    # print ext + " file not supported"
-            #folder can't be classfied bring up message to make the user classify it themselves
-            else:
-                print sort_folder + " cannot be sorted. Would you like to move it? [y/n]"
-                flag = raw_input()
-                if(flag=='y'):
-                    print "Where would you like to move " + sort_folder + "?"
-                    flag = int(raw_input(print_sort_folder_options()+"\n"))
-                    folder = get_folder2(flag)
-                    if(flag!="NA"): #should tab this part correctly
-                        folder_path = base_folder + "/" + folder
-                    # print folder_path
-                    shutil.move(sort_folder, folder_path)
-                    move_count +=1
-
-def process_files(base_folder):
-    dirlist = os.listdir(base_folder) #order the files before the directories
-    dirlist.sort(reverse=True)
-    for filename in dirlist:
-        # check if filename is a file and not a directory
-        if(base_folder == clean_folder):
-            if(os.path.isdir(base_folder + "/"+ filename)):
-                special = False
-                for k in folder_dic.keys():
-                    if(filename==k):
-                        special = True
-                        break
-                if(not special):
-                    if filename.find(".") != -1:
-                        # probably an application container still needs to be sorted
-                        # print filename + "is an application container"
-                        transfer_files(filename, base_folder)
-                    else:
-                        process_folder(filename, base_folder)
-
-            else:
-                transfer_files(filename, base_folder)
 
 def transfer_files(filename, base_folder):
     if filename.find(".") != -1:
@@ -199,14 +122,97 @@ def transfer_files(filename, base_folder):
         # else:
             # print ext + " file not supported"
 
+def process_folder(sort_folder, base_folder): #sort_folder is the folder I am classifying
+    global move_count
+    global folder_torrent
+    #torrent code
+    if(len(folder_torrent) != 0 and sort_folder in str(folder_torrent)): #if the torrent folder array isn't empty and if the directory matches with a .torrent file
+        folder_torrent.remove(sort_folder)
+        folder = "_Torrents"
+        folder_path = base_folder + "/" + folder
+        # check if a sorting folder directory exists
+        if os.path.exists(folder_path) == False:
+            os.mkdir(folder_path)
+        #move file to sorting folder
+        try:
+            shutil.move(base_folder + "/" + sort_folder, folder_path)
+            move_count+=1
+            # print "moved " + filename + " to " + folder
+        except:
+            print "\nERROR: Folder transfer error: " + sort_folder + "\n"
+    else: #other directories
+        sort_folder = base_folder + "/" + sort_folder
+        folder_string = ""# tracks the _folders for each file and concatenates them to this string
+        for filename in os.listdir(sort_folder):
+            # check if filename is not a directory and is a file
+            if(not os.path.isdir(sort_folder + "/"+ filename)):
+                if filename.find(".") != -1:
+                    ext = get_extension(filename)
+                    if(not ext==".ds_store"):
+                        folder = get_folder(ext)
+                        folder_string += get_folder(ext)
+                # do nothing because it is a sub-directory of the directory we are checking
+        folder = most_occurences(folder_string) #gets the most occurences of a _folder in folder_string and that is what we classify with
+        if folder!="NA":
+            folder_path = base_folder + "/" + folder
+            # check if a sorting folder directory exists
+            if os.path.exists(folder_path) == False:
+                os.mkdir(folder_path)
+            #move file to sorting folder
+            try:
+                shutil.move(sort_folder, folder_path)
+                move_count+=1
+                # print "moved " + filename + " to " + folder
+            except:
+                print "\nERROR: Folder transfer error: " + sort_folder + "\n"
+        #folder can't be classfied bring up message to make the user classify it themselves
+        else:
+            print sort_folder + " cannot be sorted. Would you like to move it? [y/n]"
+            flag = raw_input()
+            if(flag=='y'):
+                print "Where would you like to move " + sort_folder + "?"
+                flag = int(raw_input(print_sort_folder_options()+"\n"))
+                folder = get_folder2(flag)
+                if(flag!="NA"): #should tab this part correctly
+                    folder_path = base_folder + "/" + folder
+                # print folder_path
+                shutil.move(sort_folder, folder_path)
+                move_count +=1
+
+def process_files(base_folder):
+    dirlist = os.listdir(base_folder) #order the files before the directories
+    dirlist.sort(reverse=True)
+    for filename in dirlist:
+        # check if filename is a file and not a directory
+        if(base_folder == clean_folder):
+            if(os.path.isdir(base_folder + "/"+ filename)):
+                special = False
+                for k in folder_dic.keys():
+                    if(filename==k):
+                        special = True
+                        break
+                if(not special):
+                    if filename.find(".") != -1:
+                        folder = get_folder(get_extension(filename))
+                        if(folder!="NA"):
+                            # probably an application container still needs to be sorted
+                            # print "Application container found: " + filename
+                            transfer_files(filename, base_folder)
+                        else: #just a directory with a full stop
+                            process_folder(filename, base_folder)
+                    else: #normal directory that needs to be classified
+                        process_folder(filename, base_folder)
+
+            else:
+                transfer_files(filename, base_folder)
+
 def clean_files(clean_folder):
     if(os.path.isdir(clean_folder)):
         print "Processing..."
         print "-------------------"
         process_files(clean_folder)
         print "SUMMARY"
-        print "Moved " + str(move_count) + " files"
-        print "Folders " + str(folder_count) + " folders"
+        print "Moved " + str(move_count) + " items"
         print "-------------------"
         flag = raw_input("Quit pyfilesort? [y/n]\n")
         if(flag=='y'):
