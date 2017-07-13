@@ -189,28 +189,29 @@ def process_files(base_folder):
     for filename in dirlist:
         # check if filename is a file and not a directory
         if(base_folder == clean_folder):
-            if(os.path.isdir(base_folder + "/"+ filename)):
-                special = False
-                for k in folder_dic.keys():
-                    if(filename==k):
-                        special = True
-                        break
-                if(not special):
-                    if filename.find(".") != -1:
-                        folder = get_folder(get_extension(filename))
-                        if(folder!="NA"):
-                            # probably an application container still needs to be sorted
-                            # print "Application container found: " + filename
-                            transfer_files(filename, base_folder)
-                        else: #just a directory with a full stop
-                            if(folder_ignore.count(folder)==0):
+            if(folder_ignore.count(filename)==0): #checks for files or folders to ignore
+                if(os.path.isdir(base_folder + "/"+ filename)):
+                    special = False
+                    for k in folder_dic.keys():
+                        if(filename==k):
+                            special = True
+                            break
+                    if(not special):
+                        if filename.find(".") != -1:
+                            folder = get_folder(get_extension(filename))
+                            if(folder!="NA"):
+                                # probably an application container still needs to be sorted
+                                # print "Application container found: " + filename
+                                transfer_files(filename, base_folder)
+                            else: #just a directory with a full stop
+                                if(folder_ignore.count(folder)==0):
+                                    process_folder(filename, base_folder)
+                        else: #normal directory that needs to be classified
+                            if(folder_ignore.count(filename)==0):
                                 process_folder(filename, base_folder)
-                    else: #normal directory that needs to be classified
-                        if(folder_ignore.count(filename)==0):
-                            process_folder(filename, base_folder)
 
-            else:
-                transfer_files(filename, base_folder)
+                else:
+                    transfer_files(filename, base_folder)
 
 def clean_files(clean_folder):
     if(os.path.isdir(clean_folder)):
