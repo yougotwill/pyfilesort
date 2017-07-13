@@ -8,6 +8,7 @@
 # add flag to sort the primary files from the command line i.e. clean dowinloads, desktop, etc.
 # make flags work with sys.argv
 # Make separate config file that will be read into the program. Will contain folder_dic and folder flag and other possible settings.
+# Create an exceptions menu options where users can add files and folers that should be ignored by pyfilesore i.e. the incomplete folder in my case
 
 # os -  used for operating system manipulation such as reading or writing to a file
 # shutil - used for file operations such as move, copy and delete
@@ -30,7 +31,7 @@ folder_dic = {
 "_Torrents": [".torrent"],
 "_Videos": [".mkv", ".mp4", ".mov", ".mpeg"],
 "_Web": [".html", ".css", ".js"],
-"_Zipped": [".zip", ".rar", ".7z", ".tar.gz", ".tar", ".gz"]
+"_Zipped": [".zip", ".rar", ".7z", ".tar.gz", ".tar", ".gz", ".unitypackage"]
 }
 folder_order = {
 "_Books": 1,
@@ -44,6 +45,8 @@ folder_order = {
 "_Web": 9,
 "_Zipped": 10
 }
+
+folder_ignore = ["Incomplete"]
 
 folder_torrent = [] #stores folders of .torrent files that need to be sorted
 
@@ -180,6 +183,7 @@ def process_folder(sort_folder, base_folder): #sort_folder is the folder I am cl
                 move_count +=1
 
 def process_files(base_folder):
+    # global folder_ignore
     dirlist = os.listdir(base_folder) #order the files before the directories
     dirlist.sort(reverse=True)
     for filename in dirlist:
@@ -199,9 +203,11 @@ def process_files(base_folder):
                             # print "Application container found: " + filename
                             transfer_files(filename, base_folder)
                         else: #just a directory with a full stop
-                            process_folder(filename, base_folder)
+                            if(folder_ignore.count(folder)==0):
+                                process_folder(filename, base_folder)
                     else: #normal directory that needs to be classified
-                        process_folder(filename, base_folder)
+                        if(folder_ignore.count(filename)==0):
+                            process_folder(filename, base_folder)
 
             else:
                 transfer_files(filename, base_folder)
