@@ -3,6 +3,11 @@
 *Get your files sorted*
 
 ## Description
+
+***Depreciated*** - please note that I am no longer working on this project.
+
+Check out my new project [filesort](https://github.com/yougotwill/filesort) where a lot of further work has been done.
+
 Just a basic program to sort items in a directory.
 Please use with caution. I have only tested this on macOS.
 
