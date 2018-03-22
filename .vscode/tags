@@ -1,0 +1,42 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Torrent	../pyfilesort/pyfilesort.py	/^from torrentool.api import Torrent$/;"	kind:namespace	line:30
+__init__.py	../pyfilesort/__init__.py	1;"	kind:file	line:1
+author	../setup.py	/^    author="William Grant",$/;"	kind:variable	line:6
+author_email	../setup.py	/^    author_email="grnwil006@myuct.ac.za",$/;"	kind:variable	line:7
+clean_files	../pyfilesort/pyfilesort.py	/^def clean_files(clean_folder):$/;"	kind:function	line:253
+clean_folder	../pyfilesort/pyfilesort.py	/^clean_folder = ""$/;"	kind:variable	line:33
+folder_dic	../pyfilesort/pyfilesort.py	/^folder_dic = {$/;"	kind:variable	line:35
+folder_ignore	../pyfilesort/pyfilesort.py	/^folder_ignore = ["Incomplete"]$/;"	kind:variable	line:67
+folder_order	../pyfilesort/pyfilesort.py	/^folder_order = {$/;"	kind:variable	line:54
+folder_torrent	../pyfilesort/pyfilesort.py	/^folder_torrent = []  # stores folders of .torrent files that need to be sorted$/;"	kind:variable	line:69
+get_extension	../pyfilesort/pyfilesort.py	/^def get_extension(value):$/;"	kind:function	line:111
+get_folder	../pyfilesort/pyfilesort.py	/^def get_folder(value):$/;"	kind:function	line:76
+get_folder2	../pyfilesort/pyfilesort.py	/^def get_folder2(value):$/;"	kind:function	line:86
+install_requires	../setup.py	/^    install_requires=[$/;"	kind:variable	line:9
+keywords	../setup.py	/^    keywords='python file clean cleanup downloads desktop clutter files sort',$/;"	kind:variable	line:15
+license	../setup.py	/^    license='MIT',$/;"	kind:variable	line:13
+long_description	../setup.py	/^    long_description=open('README.md').read(),$/;"	kind:variable	line:14
+main	../pyfilesort/pyfilesort.py	/^def main():$/;"	kind:function	line:275
+master_folder	../pyfilesort/pyfilesort.py	/^master_folder = "\/Users\/William\/Downloads"$/;"	kind:variable	line:34
+most_occurences	../pyfilesort/pyfilesort.py	/^def most_occurences(folder_string):$/;"	kind:function	line:96
+move_count	../pyfilesort/pyfilesort.py	/^move_count = 0$/;"	kind:variable	line:72
+name	../setup.py	/^    name="pyfilesort",$/;"	kind:variable	line:3
+os	../pyfilesort/pyfilesort.py	/^import os$/;"	kind:namespace	line:25
+packages	../setup.py	/^    packages=['pyfilesort'],$/;"	kind:variable	line:8
+print_sort_folder_options	../pyfilesort/pyfilesort.py	/^def print_sort_folder_options($/;"	kind:function	line:118
+process_files	../pyfilesort/pyfilesort.py	/^def process_files(base_folder):$/;"	kind:function	line:220
+process_folder	../pyfilesort/pyfilesort.py	/^def process_folder(sort_folder,$/;"	kind:function	line:157
+pyfilesort.py	../pyfilesort/pyfilesort.py	1;"	kind:file	line:1
+setup	../setup.py	/^from setuptools import setup$/;"	kind:namespace	line:1
+setup.py	../setup.py	1;"	kind:file	line:1
+shutil	../pyfilesort/pyfilesort.py	/^import shutil$/;"	kind:namespace	line:26
+sys	../pyfilesort/pyfilesort.py	/^import sys$/;"	kind:namespace	line:27
+transfer_files	../pyfilesort/pyfilesort.py	/^def transfer_files(filename, base_folder):$/;"	kind:function	line:127
+url	../setup.py	/^    url="http:\/\/github.com\/yougotwill\/pyfilesort",$/;"	kind:variable	line:5
+version	../setup.py	/^    version="0.1",$/;"	kind:variable	line:4
+zip_safe	../setup.py	/^    zip_safe=False$/;"	kind:variable	line:16

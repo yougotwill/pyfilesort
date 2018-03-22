@@ -9,7 +9,7 @@ setup(
     install_requires=[
         'torrentool',
         'click',
-        ],
+    ],
     license='MIT',
     long_description=open('README.md').read(),
     keywords='python file clean cleanup downloads desktop clutter files sort',
